@@ -44,11 +44,7 @@ namespace
 	};
 }
 
-Mesh::Mesh()
-	:mBox(Vector3::Infinity, Vector3::NegInfinity)
-	,mVertexArray(nullptr)
-	,mRadius(0.0f)
-	,mSpecPower(100.0f)
+Mesh::Mesh():mBox(Vector3::Infinity, Vector3::NegInfinity), mVertexArray(nullptr), mRadius(0.0f), mSpecPower(100.0f)
 {
 }
 
@@ -59,35 +55,28 @@ Mesh::~Mesh()
 bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 {
 	mFileName = fileName;
-
 	// Try loading the binary file first
 	if (LoadBinary(fileName + ".bin", renderer))
 	{
 		return true;
 	}
-
 	rapidjson::Document doc;
 	if (!LevelLoader::LoadJSON(fileName, doc))
 	{
 		SDL_Log("Failed to load mesh %s", fileName.c_str());
 		return false;
 	}
-
 	int ver = doc["version"].GetInt();
-
 	// Check the version
 	if (ver != 1)
 	{
 		SDL_Log("Mesh %s not version 1", fileName.c_str());
 		return false;
 	}
-
 	mShaderName = doc["shader"].GetString();
-
 	// Set the vertex layout/size based on the format in the file
 	VertexArray::Layout layout = VertexArray::PosNormTex;
 	size_t vertSize = 8;
-
 	std::string vertexFormat = doc["vertexformat"].GetString();
 	if (vertexFormat == "PosNormSkinTex")
 	{
@@ -95,7 +84,6 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 		// This is the number of "Vertex" unions, which is 8 + 2 (for skinning)s
 		vertSize = 10;
 	}
-
 	// Load textures
 	const rapidjson::Value& textures = doc["textures"];
 	if (!textures.IsArray() || textures.Size() < 1)
@@ -103,9 +91,7 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 		SDL_Log("Mesh %s has no textures, there should be at least one", fileName.c_str());
 		return false;
 	}
-
 	mSpecPower = static_cast<float>(doc["specularPower"].GetDouble());
-
 	std::vector<std::string> textureNames;
 	for (rapidjson::SizeType i = 0; i < textures.Size(); i++)
 	{
@@ -120,7 +106,6 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 		}
 		mTextures.emplace_back(t);
 	}
-
 	// Load in the vertices
 	const rapidjson::Value& vertsJson = doc["vertices"];
 	if (!vertsJson.IsArray() || vertsJson.Size() < 1)
@@ -128,7 +113,6 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 		SDL_Log("Mesh %s has no vertices", fileName.c_str());
 		return false;
 	}
-
 	std::vector<Vertex> vertices;
 	vertices.reserve(vertsJson.Size() * vertSize);
 	mRadius = 0.0f;
@@ -141,11 +125,9 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 			SDL_Log("Unexpected vertex format for %s", fileName.c_str());
 			return false;
 		}
-
 		Vector3 pos(vert[0].GetDouble(), vert[1].GetDouble(), vert[2].GetDouble());
 		mRadius = Math::Max(mRadius, pos.LengthSq());
 		mBox.UpdateMinMax(pos);
-
 		if (layout == VertexArray::PosNormTex)
 		{
 			Vertex v;
@@ -165,7 +147,6 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 				v.f = static_cast<float>(vert[j].GetDouble());
 				vertices.emplace_back(v);
 			}
-
 			// Add skin information
 			for (rapidjson::SizeType j = 6; j < 14; j += 4)
 			{
@@ -175,7 +156,6 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 				v.b[3] = vert[j + 3].GetUint();
 				vertices.emplace_back(v);
 			}
-
 			// Add tex coords
 			for (rapidjson::SizeType j = 14; j < vert.Size(); j++)
 			{
@@ -184,10 +164,8 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 			}
 		}
 	}
-
 	// We were computing length squared earlier
 	mRadius = Math::Sqrt(mRadius);
-
 	// Load in the indices
 	const rapidjson::Value& indJson = doc["indices"];
 	if (!indJson.IsArray() || indJson.Size() < 1)
@@ -195,7 +173,6 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 		SDL_Log("Mesh %s has no indices", fileName.c_str());
 		return false;
 	}
-
 	std::vector<unsigned int> indices;
 	indices.reserve(indJson.Size() * 3);
 	for (rapidjson::SizeType i = 0; i < indJson.Size(); i++)
@@ -206,23 +183,15 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 			SDL_Log("Invalid indices for %s", fileName.c_str());
 			return false;
 		}
-
 		indices.emplace_back(ind[0].GetUint());
 		indices.emplace_back(ind[1].GetUint());
 		indices.emplace_back(ind[2].GetUint());
 	}
-
 	// Now create a vertex array
 	unsigned int numVerts = static_cast<unsigned>(vertices.size()) / vertSize;
-	mVertexArray = new VertexArray(vertices.data(), numVerts,
-		layout, indices.data(), static_cast<unsigned>(indices.size()));
-
+	mVertexArray = new VertexArray(vertices.data(), numVerts, layout, indices.data(), static_cast<unsigned>(indices.size()));
 	// Save the binary mesh
-	SaveBinary(fileName + ".bin", vertices.data(),
-		numVerts, layout, indices.data(),
-		static_cast<unsigned>(indices.size()),
-		textureNames, mBox, mRadius,
-		mSpecPower);
+	SaveBinary(fileName + ".bin", vertices.data(), numVerts, layout, indices.data(), static_cast<unsigned>(indices.size()), textureNames, mBox, mRadius, mSpecPower);
 	return true;
 }
 
@@ -244,31 +213,22 @@ Texture* Mesh::GetTexture(size_t index)
 	}
 }
 
-void Mesh::SaveBinary(const std::string& fileName, const void* verts, 
-	uint32_t numVerts, VertexArray::Layout layout,
-	const uint32_t* indices, uint32_t numIndices,
-	const std::vector<std::string>& textureNames,
-	const AABB& box, float radius,
-	float specPower)
+void Mesh::SaveBinary(const std::string& fileName, const void* verts, uint32_t numVerts, VertexArray::Layout layout, const uint32_t* indices, uint32_t numIndices, const std::vector<std::string>& textureNames, const AABB& box, float radius, float specPower)
 {
 	// Create header struct
 	MeshBinHeader header;
 	header.mLayout = layout;
-	header.mNumTextures = 
-		static_cast<unsigned>(textureNames.size());
+	header.mNumTextures = static_cast<unsigned>(textureNames.size());
 	header.mNumVerts = numVerts;
 	header.mNumIndices = numIndices;
 	header.mBox = box;
 	header.mRadius = radius;
-
 	// Open binary file for writing
-	std::ofstream outFile(fileName, std::ios::out 
-		| std::ios::binary);
+	std::ofstream outFile(fileName, std::ios::out | std::ios::binary);
 	if (outFile.is_open())
 	{
 		// Write the header
 		outFile.write(reinterpret_cast<char*>(&header), sizeof(header));
-
 		// For each texture, we need to write the size of the name
 		// followed by the string (null-terminated)
 		for (const auto& tex : textureNames)
@@ -279,48 +239,39 @@ void Mesh::SaveBinary(const std::string& fileName, const void* verts,
 			outFile.write(tex.c_str(), nameSize - 1);
 			outFile.write("\0", 1);
 		}
-
 		// Figure out number of bytes for each vertex, based on layout
 		unsigned vertexSize = VertexArray::GetVertexSize(layout);
 		// Write vertices
-		outFile.write(reinterpret_cast<const char*>(verts), 
-			numVerts * vertexSize);
+		outFile.write(reinterpret_cast<const char*>(verts), numVerts * vertexSize);
 		// Write indices
-		outFile.write(reinterpret_cast<const char*>(indices), 
-			numIndices * sizeof(uint32_t));
+		outFile.write(reinterpret_cast<const char*>(indices), numIndices * sizeof(uint32_t));
 	}
 }
 
 bool Mesh::LoadBinary(const std::string& fileName, Renderer* renderer)
 {
-	std::ifstream inFile(fileName, std::ios::in | 
-		std::ios::binary);
+	std::ifstream inFile(fileName, std::ios::in | std::ios::binary);
 	if (inFile.is_open())
 	{
 		// Read in header
 		MeshBinHeader header;
 		inFile.read(reinterpret_cast<char*>(&header), sizeof(header));
-
 		// Validate the header signature and version
 		char* sig = header.mSignature;
-		if (sig[0] != 'G' || sig[1] != 'M' || sig[2] != 'S' ||
-			sig[3] != 'H' || header.mVersion != BinaryVersion)
+		if (sig[0] != 'G' || sig[1] != 'M' || sig[2] != 'S' || sig[3] != 'H' || header.mVersion != BinaryVersion)
 		{
 			return false;
 		}
-
 		// Read in the texture file names
 		for (uint32_t i = 0; i < header.mNumTextures; i++)
 		{
 			// Get the file name size
 			uint16_t nameSize = 0;
 			inFile.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize));
-			
 			// Make a buffer of this size
 			char* texName = new char[nameSize];
 			// Read in the texture name
 			inFile.read(texName, nameSize);
-			
 			// Get this texture
 			Texture* t = renderer->GetTexture(texName);
 			if (t == nullptr)
@@ -329,33 +280,24 @@ bool Mesh::LoadBinary(const std::string& fileName, Renderer* renderer)
 				t = renderer->GetTexture("Assets/Default.png");
 			}
 			mTextures.emplace_back(t);
-
 			delete[] texName;
 		}
-
 		// Now read in the vertices
 		unsigned vertexSize = VertexArray::GetVertexSize(header.mLayout);
 		char* verts = new char[header.mNumVerts * vertexSize];
 		inFile.read(verts, header.mNumVerts * vertexSize);
-
 		// Now read in the indices
 		uint32_t* indices = new uint32_t[header.mNumIndices];
-		inFile.read(reinterpret_cast<char*>(indices), 
-			header.mNumIndices * sizeof(uint32_t));
-
+		inFile.read(reinterpret_cast<char*>(indices), header.mNumIndices * sizeof(uint32_t));
 		// Now create the vertex array
-		mVertexArray = new VertexArray(verts, header.mNumVerts,
-			header.mLayout, indices, header.mNumIndices);
-
+		mVertexArray = new VertexArray(verts, header.mNumVerts, header.mLayout, indices, header.mNumIndices);
 		// Cleanup memory
 		delete[] verts;
 		delete[] indices;
-
 		// Set mBox/mRadius/specular from header
 		mBox = header.mBox;
 		mRadius = header.mRadius;
 		mSpecPower = header.mSpecPower;
-
 		return true;
 	}
 	return false;

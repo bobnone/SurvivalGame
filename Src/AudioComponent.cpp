@@ -11,8 +11,7 @@
 #include "Game.h"
 #include "AudioSystem.h"
 
-AudioComponent::AudioComponent(Actor* owner, int updateOrder)
-	:Component(owner, updateOrder)
+AudioComponent::AudioComponent(Actor* owner, int updateOrder):Component(owner, updateOrder)
 {
 }
 
@@ -24,7 +23,6 @@ AudioComponent::~AudioComponent()
 void AudioComponent::Update(float deltaTime)
 {
 	Component::Update(deltaTime);
-
 	// Remove invalid 2D events
 	auto iter = mEvents2D.begin();
 	while (iter != mEvents2D.end())
@@ -38,7 +36,6 @@ void AudioComponent::Update(float deltaTime)
 			++iter;
 		}
 	}
-
 	// Remove invalid 3D events
 	iter = mEvents3D.begin();
 	while (iter != mEvents3D.end())

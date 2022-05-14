@@ -27,7 +27,6 @@ bool AudioSystem::Initialize()
 		FMOD_DEBUG_LEVEL_ERROR, // Log only errors
 		FMOD_DEBUG_MODE_TTY // Output to stdout
 	);
-
 	// Create FMOD studio system object
 	FMOD_RESULT result;
 	result = FMOD::Studio::System::create(&mSystem);
@@ -36,7 +35,6 @@ bool AudioSystem::Initialize()
 		SDL_Log("Failed to create FMOD system: %s", FMOD_ErrorString(result));
 		return false;
 	}
-
 	// Initialize FMOD studio system
 	result = mSystem->initialize(
 		512, // Max number of concurrent sounds
@@ -49,14 +47,11 @@ bool AudioSystem::Initialize()
 		SDL_Log("Failed to initialize FMOD system: %s", FMOD_ErrorString(result));
 		return false;
 	}
-
 	// Save the low-level system pointer
 	mSystem->getLowLevelSystem(&mLowLevelSystem);*/
-
 	// Load the master banks (strings first)
 	LoadBank("Assets/Master Bank.strings.bank");
 	LoadBank("Assets/Master Bank.bank");
-
 	return true;
 }
 
@@ -78,7 +73,6 @@ void AudioSystem::LoadBank(const std::string& name)
 	{
 		return;
 	}
-
 	// Try to load bank
 	FMOD::Studio::Bank* bank = nullptr;
 	FMOD_RESULT result = mSystem->loadBankFile(
@@ -86,7 +80,6 @@ void AudioSystem::LoadBank(const std::string& name)
 		FMOD_STUDIO_LOAD_BANK_NORMAL, // Normal loading
 		&bank // Save pointer to bank
 	);
-
 	const int maxPathLength = 512;
 	if (result == FMOD_OK)
 	{
@@ -141,7 +134,6 @@ void AudioSystem::UnloadBank(const std::string& name)
 	{
 		return;
 	}
-
 	// First we need to remove all events from this bank
 	FMOD::Studio::Bank* bank = iter->second;
 	int numEvents = 0;
@@ -188,7 +180,6 @@ void AudioSystem::UnloadBank(const std::string& name)
 			}
 		}
 	}
-
 	// Unload sample data and bank
 	bank->unloadSampleData();
 	bank->unload();
@@ -248,13 +239,11 @@ void AudioSystem::Update(float deltaTime)
 			done.emplace_back(iter.first);
 		}
 	}
-	
 	// Remove done event instances from map
 	for (auto id : done)
 	{
 		mEventInstances.erase(id);
 	}
-
 	// Update FMOD
 	mSystem->update();*/
 }

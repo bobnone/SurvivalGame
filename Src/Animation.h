@@ -15,15 +15,28 @@ class Animation
 {
 public:
 	bool Load(const std::string& fileName);
-
-	size_t GetNumBones() const { return mNumBones; }
-	size_t GetNumFrames() const { return mNumFrames; }
-	float GetDuration() const { return mDuration; }
-	float GetFrameDuration() const { return mFrameDuration; }
-
+	size_t GetNumBones() const
+	{
+		return mNumBones;
+	}
+	size_t GetNumFrames() const
+	{
+		return mNumFrames;
+	}
+	float GetDuration() const
+	{
+		return mDuration;
+	}
+	float GetFrameDuration() const
+	{
+		return mFrameDuration;
+	}
 	// Fills the provided vector with the global (current) pose matrices for each
 	// bone at the specified time in the animation. It is expected that the time
-	const std::string& GetFileName() const { return mFileName; }
+	const std::string& GetFileName() const
+	{
+		return mFileName;
+	}
 	// is >= 0.0f and <= mDuration
 	void GetGlobalPoseAtTime(std::vector<Matrix4>& outPoses, const class Skeleton* inSkeleton, float inTime) const;
 private:

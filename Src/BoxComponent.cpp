@@ -12,11 +12,7 @@
 #include "PhysWorld.h"
 #include "LevelLoader.h"
 
-BoxComponent::BoxComponent(Actor* owner, int updateOrder)
-	:Component(owner, updateOrder)
-	,mObjectBox(Vector3::Zero, Vector3::Zero)
-	,mWorldBox(Vector3::Zero, Vector3::Zero)
-	,mShouldRotate(true)
+BoxComponent::BoxComponent(Actor* owner, int updateOrder):Component(owner, updateOrder), mObjectBox(Vector3::Zero, Vector3::Zero), mWorldBox(Vector3::Zero, Vector3::Zero), mShouldRotate(true)
 {
 	mOwner->GetGame()->GetPhysWorld()->AddBox(this);
 }
@@ -46,7 +42,6 @@ void BoxComponent::OnUpdateWorldTransform()
 void BoxComponent::LoadProperties(const rapidjson::Value& inObj)
 {
 	Component::LoadProperties(inObj);
-
 	JsonHelper::GetVector3(inObj, "objectMin", mObjectBox.mMin);
 	JsonHelper::GetVector3(inObj, "objectMax", mObjectBox.mMax);
 	JsonHelper::GetVector3(inObj, "worldMin", mWorldBox.mMin);
@@ -57,7 +52,6 @@ void BoxComponent::LoadProperties(const rapidjson::Value& inObj)
 void BoxComponent::SaveProperties(rapidjson::Document::AllocatorType & alloc, rapidjson::Value & inObj) const
 {
 	Component::SaveProperties(alloc, inObj);
-
 	JsonHelper::AddVector3(alloc, inObj, "objectMin", mObjectBox.mMin);
 	JsonHelper::AddVector3(alloc, inObj, "objectMax", mObjectBox.mMax);
 	JsonHelper::AddVector3(alloc, inObj, "worldMin", mWorldBox.mMin);

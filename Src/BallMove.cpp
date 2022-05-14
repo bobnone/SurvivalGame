@@ -13,8 +13,7 @@
 #include "TargetActor.h"
 #include "BallActor.h"
 
-BallMove::BallMove(Actor* owner)
-	:MoveComponent(owner)
+BallMove::BallMove(Actor* owner):MoveComponent(owner)
 {
 }
 
@@ -22,7 +21,6 @@ void BallMove::Update(float deltaTime)
 {
 	const float segmentLength = 30.0f;
 	PhysWorld* phys = mOwner->GetGame()->GetPhysWorld();
-
 	// Construct segment in direction of travel
 	Vector3 start = mOwner->GetPosition();
 	Vector3 dir = mOwner->GetForward();

@@ -11,15 +11,12 @@
 #include <vector>
 #include "Game.h"
 
-Font::Font(class Game* game)
-	:mGame(game)
+Font::Font(class Game* game):mGame(game)
 {
-	
 }
 
 Font::~Font()
 {
-	
 }
 
 bool Font::Load(const std::string& fileName)
@@ -57,19 +54,15 @@ void Font::Unload()
 	}
 }
 
-Texture* Font::RenderText(const std::string& textKey,
-						  const Vector3& color /*= Color::White*/,
-						  int pointSize /*= 24*/)
+Texture* Font::RenderText(const std::string& textKey, const Vector3& color /*= Color::White*/, int pointSize /*= 24*/)
 {
 	Texture* texture = nullptr;
-	
 	// Convert to SDL_Color
 	SDL_Color sdlColor;
 	sdlColor.r = static_cast<Uint8>(color.x * 255);
 	sdlColor.g = static_cast<Uint8>(color.y * 255);
 	sdlColor.b = static_cast<Uint8>(color.z * 255);
 	sdlColor.a = 255;
-	
 	// Find the font data for this point size
 	auto iter = mFontData.find(pointSize);
 	if (iter != mFontData.end())
@@ -90,6 +83,5 @@ Texture* Font::RenderText(const std::string& textKey,
 	{
 		SDL_Log("Point size %d is unsupported", pointSize);
 	}
-	
 	return texture;
 }

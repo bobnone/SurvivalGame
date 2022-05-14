@@ -15,9 +15,7 @@
 #include "AudioComponent.h"
 #include "LevelLoader.h"
 
-BallActor::BallActor(Game* game)
-	:Actor(game)
-	,mLifeSpan(2.0f)
+BallActor::BallActor(Game* game):Actor(game), mLifeSpan(2.0f)
 {
 	//SetScale(10.0f);
 	MeshComponent* mc = new MeshComponent(this);
@@ -31,7 +29,6 @@ BallActor::BallActor(Game* game)
 void BallActor::UpdateActor(float deltaTime)
 {
 	Actor::UpdateActor(deltaTime);
-	
 	mLifeSpan -= deltaTime;
 	if (mLifeSpan < 0.0f)
 	{

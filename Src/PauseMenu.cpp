@@ -11,8 +11,7 @@
 #include "DialogBox.h"
 #include <SDL/SDL.h>
 
-PauseMenu::PauseMenu(Game* game)
-	:UIScreen(game)
+PauseMenu::PauseMenu(Game* game):UIScreen(game)
 {
 	mGame->SetState(Game::EPaused);
 	SetRelativeMouseMode(false);
@@ -37,7 +36,6 @@ PauseMenu::~PauseMenu()
 void PauseMenu::HandleKeyPress(int key)
 {
 	UIScreen::HandleKeyPress(key);
-	
 	if (key == SDLK_ESCAPE)
 	{
 		Close();

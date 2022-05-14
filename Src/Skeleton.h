@@ -21,16 +21,29 @@ public:
 		std::string mName;
 		int mParent;
 	};
-
 	// Load from a file
 	bool Load(const std::string& fileName);
-
 	// Getter functions
-	size_t GetNumBones() const { return mBones.size(); }
-	const Bone& GetBone(size_t idx) const { return mBones[idx]; }
-	const std::vector<Bone>& GetBones() const { return mBones; }
-	const std::vector<Matrix4>& GetGlobalInvBindPoses() const { return mGlobalInvBindPoses; }
-	const std::string& GetFileName() const { return mFileName; }
+	size_t GetNumBones() const
+	{
+		return mBones.size();
+	}
+	const Bone& GetBone(size_t idx) const
+	{
+		return mBones[idx];
+	}
+	const std::vector<Bone>& GetBones() const
+	{
+		return mBones;
+	}
+	const std::vector<Matrix4>& GetGlobalInvBindPoses() const
+	{
+		return mGlobalInvBindPoses;
+	}
+	const std::string& GetFileName() const
+	{
+		return mFileName;
+	}
 protected:
 	// Called automatically when the skeleton is loaded
 	// Computes the global inverse bind pose for each bone

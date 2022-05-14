@@ -16,12 +16,7 @@
 #include "VertexArray.h"
 #include "LevelLoader.h"
 
-MeshComponent::MeshComponent(Actor* owner, bool isSkeletal)
-	:Component(owner)
-	,mMesh(nullptr)
-	,mTextureIndex(0)
-	,mVisible(true)
-	,mIsSkeletal(isSkeletal)
+MeshComponent::MeshComponent(Actor* owner, bool isSkeletal):Component(owner), mMesh(nullptr), mTextureIndex(0), mVisible(true), mIsSkeletal(isSkeletal)
 {
 	mOwner->GetGame()->GetRenderer()->AddMeshComp(this);
 }
@@ -36,8 +31,7 @@ void MeshComponent::Draw(Shader* shader)
 	if (mMesh)
 	{
 		// Set the world transform
-		shader->SetMatrixUniform("uWorldTransform", 
-			mOwner->GetWorldTransform());
+		shader->SetMatrixUniform("uWorldTransform", mOwner->GetWorldTransform());
 		// Set specular power
 		shader->SetFloatUniform("uSpecPower", mMesh->GetSpecPower());
 		// Set the active texture
@@ -57,19 +51,16 @@ void MeshComponent::Draw(Shader* shader)
 void MeshComponent::LoadProperties(const rapidjson::Value& inObj)
 {
 	Component::LoadProperties(inObj);
-
 	std::string meshFile;
 	if (JsonHelper::GetString(inObj, "meshFile", meshFile))
 	{
 		SetMesh(mOwner->GetGame()->GetRenderer()->GetMesh(meshFile));
 	}
-
 	int idx;
 	if (JsonHelper::GetInt(inObj, "textureIndex", idx))
 	{
 		mTextureIndex = static_cast<size_t>(idx);
 	}
-
 	JsonHelper::GetBool(inObj, "visible", mVisible);
 	JsonHelper::GetBool(inObj, "isSkeletal", mIsSkeletal);
 }
@@ -77,7 +68,6 @@ void MeshComponent::LoadProperties(const rapidjson::Value& inObj)
 void MeshComponent::SaveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObj) const
 {
 	Component::SaveProperties(alloc, inObj);
-
 	if (mMesh)
 	{
 		JsonHelper::AddString(alloc, inObj, "meshFile", mMesh->GetFileName());

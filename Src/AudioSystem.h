@@ -17,22 +17,18 @@ class AudioSystem
 public:
 	AudioSystem(class Game* game);
 	~AudioSystem();
-
 	bool Initialize();
 	void Shutdown();
-
-	// Load/unload banks
+// Load/unload banks:
 	void LoadBank(const std::string& name);
 	void UnloadBank(const std::string& name);
 	void UnloadAllBanks();
 
 	SoundEvent PlayEvent(const std::string& name);
-
 	void Update(float deltaTime);
-
 	// For positional audio
 	void SetListener(const Matrix4& viewMatrix);
-	// Control buses
+// Control buses:
 	float GetBusVolume(const std::string& name) const;
 	bool GetBusPaused(const std::string& name) const;
 	void SetBusVolume(const std::string& name, float volume);
@@ -43,7 +39,6 @@ protected:
 private:
 	// Tracks the next ID to use for event instances
 	static unsigned int sNextID;
-
 	class Game* mGame;
 	// Map of loaded banks
 	/*std::unordered_map<std::string, FMOD::Studio::Bank*> mBanks;

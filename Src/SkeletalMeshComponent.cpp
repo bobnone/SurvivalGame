@@ -18,9 +18,7 @@
 #include "Skeleton.h"
 #include "LevelLoader.h"
 
-SkeletalMeshComponent::SkeletalMeshComponent(Actor* owner)
-	:MeshComponent(owner, true)
-	,mSkeleton(nullptr)
+SkeletalMeshComponent::SkeletalMeshComponent(Actor* owner):MeshComponent(owner, true), mSkeleton(nullptr)
 {
 }
 
@@ -29,11 +27,9 @@ void SkeletalMeshComponent::Draw(Shader* shader)
 	if (mMesh)
 	{
 		// Set the world transform
-		shader->SetMatrixUniform("uWorldTransform", 
-			mOwner->GetWorldTransform());
+		shader->SetMatrixUniform("uWorldTransform", mOwner->GetWorldTransform());
 		// Set the matrix palette
-		shader->SetMatrixUniforms("uMatrixPalette", &mPalette.mEntry[0], 
-			MAX_SKELETON_BONES);
+		shader->SetMatrixUniforms("uMatrixPalette", &mPalette.mEntry[0], MAX_SKELETON_BONES);
 		// Set specular power
 		shader->SetFloatUniform("uSpecPower", mMesh->GetSpecPower());
 		// Set the active texture
@@ -60,7 +56,6 @@ void SkeletalMeshComponent::Update(float deltaTime)
 		{
 			mAnimTime -= mAnimation->GetDuration();
 		}
-
 		// Recompute matrix palette
 		ComputeMatrixPalette();
 	}
@@ -71,30 +66,27 @@ float SkeletalMeshComponent::PlayAnimation(Animation* anim, float playRate)
 	mAnimation = anim;
 	mAnimTime = 0.0f;
 	mAnimPlayRate = playRate;
-
-	if (!mAnimation) { return 0.0f; }
-
+	if (!mAnimation)
+	{
+		return 0.0f;
+	}
 	ComputeMatrixPalette();
-
 	return mAnimation->GetDuration();
 }
 
 void SkeletalMeshComponent::LoadProperties(const rapidjson::Value& inObj)
 {
 	MeshComponent::LoadProperties(inObj);
-
 	std::string skelFile;
 	if (JsonHelper::GetString(inObj, "skelFile", skelFile))
 	{
 		SetSkeleton(mOwner->GetGame()->GetSkeleton(skelFile));
 	}
-
 	std::string animFile;
 	if (JsonHelper::GetString(inObj, "animFile", animFile))
 	{
 		PlayAnimation(mOwner->GetGame()->GetAnimation(animFile));
 	}
-
 	JsonHelper::GetFloat(inObj, "animPlayRate", mAnimPlayRate);
 	JsonHelper::GetFloat(inObj, "animTime", mAnimTime);
 }
@@ -102,17 +94,14 @@ void SkeletalMeshComponent::LoadProperties(const rapidjson::Value& inObj)
 void SkeletalMeshComponent::SaveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObj) const
 {
 	MeshComponent::SaveProperties(alloc, inObj);
-
 	if (mSkeleton)
 	{
 		JsonHelper::AddString(alloc, inObj, "skelFile", mSkeleton->GetFileName());
 	}
-
 	if (mAnimation)
 	{
 		JsonHelper::AddString(alloc, inObj, "animFile", mAnimation->GetFileName());
 	}
-
 	JsonHelper::AddFloat(alloc, inObj, "animPlayRate", mAnimPlayRate);
 	JsonHelper::AddFloat(alloc, inObj, "animTime", mAnimTime);
 }
@@ -122,7 +111,6 @@ void SkeletalMeshComponent::ComputeMatrixPalette()
 	const std::vector<Matrix4>& globalInvBindPoses = mSkeleton->GetGlobalInvBindPoses();
 	std::vector<Matrix4> currentPoses;
 	mAnimation->GetGlobalPoseAtTime(currentPoses, mSkeleton, mAnimTime);
-
 	// Setup the palette for each bone
 	for (size_t i = 0; i < mSkeleton->GetNumBones(); i++)
 	{

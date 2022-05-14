@@ -13,14 +13,7 @@
 #include "Renderer.h"
 #include "Font.h"
 
-UIScreen::UIScreen(Game* game)
-	:mGame(game)
-	,mTitle(nullptr)
-	,mBackground(nullptr)
-	,mTitlePos(0.0f, 300.0f)
-	,mNextButtonPos(0.0f, 200.0f)
-	,mBGPos(0.0f, 250.0f)
-	,mState(EActive)
+UIScreen::UIScreen(Game* game):mGame(game), mTitle(nullptr), mBackground(nullptr), mTitlePos(0.0f, 300.0f), mNextButtonPos(0.0f, 200.0f), mBGPos(0.0f, 250.0f), mState(EActive)
 {
 	// Add to UI Stack
 	mGame->PushUI(this);
@@ -36,7 +29,6 @@ UIScreen::~UIScreen()
 		mTitle->Unload();
 		delete mTitle;
 	}
-
 	for (auto b : mButtons)
 	{
 		delete b;
@@ -45,8 +37,7 @@ UIScreen::~UIScreen()
 }
 
 void UIScreen::Update(float deltaTime)
-{
-	
+{	
 }
 
 void UIScreen::Draw(Shader* shader)
@@ -85,7 +76,6 @@ void UIScreen::ProcessInput(const uint8_t* keys)
 		Vector2 mousePos(static_cast<float>(x), static_cast<float>(y));
 		mousePos.x -= mGame->GetRenderer()->GetScreenWidth() * 0.5f;
 		mousePos.y = mGame->GetRenderer()->GetScreenHeight() * 0.5f - mousePos.y;
-		
 		// Highlight any buttons
 		for (auto b : mButtons)
 		{
@@ -128,9 +118,7 @@ void UIScreen::Close()
 	mState = EClosing;
 }
 
-void UIScreen::SetTitle(const std::string& text,
-						const Vector3& color,
-						int pointSize)
+void UIScreen::SetTitle(const std::string& text, const Vector3& color, int pointSize)
 {
 	// Clear out previous title texture if it exists
 	if (mTitle)
@@ -144,33 +132,23 @@ void UIScreen::SetTitle(const std::string& text,
 
 void UIScreen::AddButton(const std::string& name, std::function<void()> onClick)
 {
-	Vector2 dims(static_cast<float>(mButtonOn->GetWidth()), 
-		static_cast<float>(mButtonOn->GetHeight()));
+	Vector2 dims(static_cast<float>(mButtonOn->GetWidth()), static_cast<float>(mButtonOn->GetHeight()));
 	Button* b = new Button(name, mFont, onClick, mNextButtonPos, dims);
 	mButtons.emplace_back(b);
-
 	// Update position of next button
 	// Move down by height of button plus padding
 	mNextButtonPos.y -= mButtonOff->GetHeight() + 20.0f;
 }
 
-void UIScreen::DrawTexture(class Shader* shader, class Texture* texture,
-				 const Vector2& offset, float scale, bool flipY)
+void UIScreen::DrawTexture(class Shader* shader, class Texture* texture, const Vector2& offset, float scale, bool flipY)
 {
 	// Scale the quad by the width/height of texture
 	// and flip the y if we need to
 	float yScale = static_cast<float>(texture->GetHeight()) * scale;
 	if (flipY) { yScale *= -1.0f; }
-	Matrix4 scaleMat = Matrix4::CreateScale(
-		static_cast<float>(texture->GetWidth()) * scale,
-		yScale,
-		1.0f);
-
-
+	Matrix4 scaleMat = Matrix4::CreateScale(static_cast<float>(texture->GetWidth()) * scale, yScale, 1.0f);
 	// Translate to position on screen
-	Matrix4 transMat = Matrix4::CreateTranslation(
-		Vector3(offset.x, offset.y, 0.0f));
-
+	Matrix4 transMat = Matrix4::CreateTranslation(Vector3(offset.x, offset.y, 0.0f));
 	// Set world transform
 	Matrix4 world = scaleMat * transMat;
 	shader->SetMatrixUniform("uWorldTransform", world);
@@ -194,15 +172,7 @@ void UIScreen::SetRelativeMouseMode(bool relative)
 	}
 }
 
-Button::Button(const std::string& name, Font* font,
-	std::function<void()> onClick,
-	const Vector2& pos, const Vector2& dims)
-	:mOnClick(onClick)
-	,mNameTex(nullptr)
-	,mFont(font)
-	,mPosition(pos)
-	,mDimensions(dims)
-	,mHighlighted(false)
+Button::Button(const std::string& name, Font* font, std::function<void()> onClick, const Vector2& pos, const Vector2& dims):mOnClick(onClick), mNameTex(nullptr), mFont(font), mPosition(pos), mDimensions(dims), mHighlighted(false)
 {
 	SetName(name);
 }
@@ -219,7 +189,6 @@ Button::~Button()
 void Button::SetName(const std::string& name)
 {
 	mName = name;
-
 	if (mNameTex)
 	{
 		mNameTex->Unload();
@@ -231,10 +200,7 @@ void Button::SetName(const std::string& name)
 
 bool Button::ContainsPoint(const Vector2& pt) const
 {
-	bool no = pt.x < (mPosition.x - mDimensions.x / 2.0f) ||
-		pt.x > (mPosition.x + mDimensions.x / 2.0f) ||
-		pt.y < (mPosition.y - mDimensions.y / 2.0f) ||
-		pt.y > (mPosition.y + mDimensions.y / 2.0f);
+	bool no = pt.x < (mPosition.x - mDimensions.x / 2.0f) || pt.x > (mPosition.x + mDimensions.x / 2.0f) || pt.y < (mPosition.y - mDimensions.y / 2.0f) || pt.y > (mPosition.y + mDimensions.y / 2.0f);
 	return !no;
 }
 

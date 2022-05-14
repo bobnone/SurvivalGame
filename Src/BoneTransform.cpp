@@ -12,7 +12,6 @@ Matrix4 BoneTransform::ToMatrix() const
 {
 	Matrix4 rot = Matrix4::CreateFromQuaternion(mRotation);
 	Matrix4 trans = Matrix4::CreateTranslation(mTranslation);
-
 	return rot * trans;
 }
 

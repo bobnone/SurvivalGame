@@ -15,24 +15,19 @@
 #include "MirrorCamera.h"
 #include "LevelLoader.h"
 
-FollowActor::FollowActor(Game* game)
-	:Actor(game)
-	,mMoving(false)
+FollowActor::FollowActor(Game* game):Actor(game), mMoving(false)
 {
 	mMeshComp = new SkeletalMeshComponent(this);
 	mMeshComp->SetMesh(game->GetRenderer()->GetMesh("Assets/CatWarrior.gpmesh"));
 	mMeshComp->SetSkeleton(game->GetSkeleton("Assets/CatWarrior.gpskel"));
 	mMeshComp->PlayAnimation(game->GetAnimation("Assets/CatActionIdle.gpanim"));
 	SetPosition(Vector3(0.0f, 0.0f, -100.0f));
-
 	mMoveComp = new MoveComponent(this);
 	mCameraComp = new FollowCamera(this);
 	mCameraComp->SnapToIdeal();
-
 	// Add a component for the mirror camera
 	MirrorCamera* mirror = new MirrorCamera(this);
 	mirror->SnapToIdeal();
-
 	game->SetFollowActor(this);
 }
 
@@ -57,7 +52,6 @@ void FollowActor::ActorInput(const uint8_t* keys)
 	{
 		angularSpeed += Math::Pi;
 	}
-
 	// Did we just start moving?
 	if (!mMoving && !Math::NearZero(forwardSpeed))
 	{

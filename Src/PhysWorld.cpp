@@ -11,8 +11,7 @@
 #include "BoxComponent.h"
 #include <SDL/SDL.h>
 
-PhysWorld::PhysWorld(Game* game)
-	:mGame(game)
+PhysWorld::PhysWorld(Game* game):mGame(game)
 {
 }
 
@@ -67,12 +66,9 @@ void PhysWorld::TestPairwise(std::function<void(Actor*, Actor*)> f)
 void PhysWorld::TestSweepAndPrune(std::function<void(Actor*, Actor*)> f)
 {
 	// Sort by min.x
-	std::sort(mBoxes.begin(), mBoxes.end(),
-		[](BoxComponent* a, BoxComponent* b) {
-			return a->GetWorldBox().mMin.x <
-				b->GetWorldBox().mMin.x;
+	std::sort(mBoxes.begin(), mBoxes.end(), [](BoxComponent* a, BoxComponent* b) {
+			return a->GetWorldBox().mMin.x < b->GetWorldBox().mMin.x;
 	});
-
 	for (size_t i = 0; i < mBoxes.size(); i++)
 	{
 		// Get max.x for current box

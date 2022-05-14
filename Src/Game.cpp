@@ -31,7 +31,6 @@
 
 Game::Game():mRenderer(nullptr), mAudioSystem(nullptr), mPhysWorld(nullptr), mGameState(EGameplay), mUpdatingActors(false)
 {
-	
 }
 
 bool Game::Initialize()
@@ -41,7 +40,6 @@ bool Game::Initialize()
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
 		return false;
 	}
-
 	// Create the renderer
 	mRenderer = new Renderer(this);
 	if (!mRenderer->Initialize(1024.0f, 768.0f))
@@ -51,7 +49,6 @@ bool Game::Initialize()
 		mRenderer = nullptr;
 		return false;
 	}
-
 	// Create the audio system
 	mAudioSystem = new AudioSystem(this);
 	if (!mAudioSystem->Initialize())
@@ -62,17 +59,14 @@ bool Game::Initialize()
 		mAudioSystem = nullptr;
 		return false;
 	}
-
 	// Create the physics world
 	mPhysWorld = new PhysWorld(this);
-	
 	// Initialize SDL_ttf
 	if (TTF_Init() != 0)
 	{
 		SDL_Log("Failed to initialize SDL_ttf");
 		return false;
 	}
-
 	LoadData();
 	mTicksCount = SDL_GetTicks();
 	return true;
@@ -128,7 +122,6 @@ void Game::ProcessInput()
 				break;
 		}
 	}
-	
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 	if (mGameState == EGameplay)
 	{
@@ -209,7 +202,6 @@ void Game::UpdateGame()
 	}
 	// Get milliseconds since we started the application
 	mTicksCount = SDL_GetTicks();
-
 	if (mGameState == EGameplay)
 	{
 		// Update all actors
@@ -219,7 +211,6 @@ void Game::UpdateGame()
 			actor->Update(deltaTime);
 		}
 		mUpdatingActors = false;
-
 		// Move any pending actors to mActors
 		for (auto pending : mPendingActors)
 		{
@@ -227,7 +218,6 @@ void Game::UpdateGame()
 			mActors.emplace_back(pending);
 		}
 		mPendingActors.clear();
-
 		// Add any dead actors to a temp vector
 		std::vector<Actor*> deadActors;
 		for (auto actor : mActors)
@@ -237,17 +227,14 @@ void Game::UpdateGame()
 				deadActors.emplace_back(actor);
 			}
 		}
-
 		// Delete dead actors (which removes them from mActors)
 		for (auto actor : deadActors)
 		{
 			delete actor;
 		}
 	}
-	
 	// Update audio system
 	mAudioSystem->Update(deltaTime);
-	
 	// Update UI screens
 	for (auto ui : mUIStack)
 	{
@@ -283,13 +270,10 @@ void Game::LoadData()
 	LoadText("Assets/English.gptext");
 	// Create HUD
 	mHUD = new HUD(this);
-
 	// Load the level from file
 	LevelLoader::LoadLevel(this, "Assets/Level3.gplevel");
-	
 	// Start music
 	mMusicEvent = mAudioSystem->PlayEvent("event:/Music");
-
 	// Enable relative mouse mode for camera look
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	// Make an initial call to get relative to clear out
@@ -304,32 +288,27 @@ void Game::UnloadData()
 	{
 		delete mActors.back();
 	}
-
 	// Clear the UI stack
 	while (!mUIStack.empty())
 	{
 		delete mUIStack.back();
 		mUIStack.pop_back();
 	}
-
 	if (mRenderer)
 	{
 		mRenderer->UnloadData();
 	}
-
 	// Unload fonts
 	for (auto f : mFonts)
 	{
 		f.second->Unload();
 		delete f.second;
 	}
-
 	// Unload skeletons
 	for (auto s : mSkeletons)
 	{
 		delete s.second;
 	}
-
 	// Unload animations
 	for (auto a : mAnims)
 	{
@@ -420,18 +399,15 @@ void Game::LoadText(const std::string& fileName)
 {
 	// Clear the existing map, if already loaded
 	mText.clear();
-
 	rapidjson::Document doc;
 	if (!LevelLoader::LoadJSON(fileName, doc))
 	{
 		SDL_Log("Failed to load text file %s", fileName.c_str());
 		return;
 	}
-
 	// Parse the text map
 	const rapidjson::Value& actions = doc["TextMap"];
-	for (rapidjson::Value::ConstMemberIterator itr = actions.MemberBegin();
-		itr != actions.MemberEnd(); ++itr)
+	for (rapidjson::Value::ConstMemberIterator itr = actions.MemberBegin(); itr != actions.MemberEnd(); ++itr)
 	{
 		if (itr->name.IsString() && itr->value.IsString())
 		{

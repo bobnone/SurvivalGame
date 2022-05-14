@@ -23,11 +23,9 @@ public:
 
 	GBuffer();
 	~GBuffer();
-
 	// Create/destroy the G-buffer
 	bool Create(int width, int height);
 	void Destroy();
-	
 	// Get the texture for a specific type of data
 	class Texture* GetTexture(Type type);
 	// Get the framebuffer object ID

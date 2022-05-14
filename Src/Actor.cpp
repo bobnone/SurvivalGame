@@ -19,13 +19,7 @@ const char* Actor::TypeNames[NUM_ACTOR_TYPES] = {
 	"TargetActor",
 };
 
-Actor::Actor(Game* game)
-	:mState(EActive)
-	,mPosition(Vector3::Zero)
-	,mRotation(Quaternion::Identity)
-	,mScale(1.0f)
-	,mGame(game)
-	,mRecomputeTransform(true)
+Actor::Actor(Game* game):mState(EActive), mPosition(Vector3::Zero), mRotation(Quaternion::Identity), mScale(1.0f), mGame(game), mRecomputeTransform(true)
 {
 	mGame->AddActor(this);
 }
@@ -82,7 +76,6 @@ void Actor::ProcessInput(const uint8_t* keyState)
 
 void Actor::ActorInput(const uint8_t* keyState)
 {
-
 }
 
 void Actor::ComputeWorldTransform()
@@ -92,7 +85,6 @@ void Actor::ComputeWorldTransform()
 	mWorldTransform = Matrix4::CreateScale(mScale);
 	mWorldTransform *= Matrix4::CreateFromQuaternion(mRotation);
 	mWorldTransform *= Matrix4::CreateTranslation(mPosition);
-
 	// Inform components world transform updated
 	for (auto comp : mComponents)
 	{
@@ -130,16 +122,13 @@ void Actor::AddComponent(Component* component)
 	// (The first element with a order higher than me)
 	int myOrder = component->GetUpdateOrder();
 	auto iter = mComponents.begin();
-	for (;
-		iter != mComponents.end();
-		++iter)
+	for (;iter != mComponents.end();++iter)
 	{
 		if (myOrder < (*iter)->GetUpdateOrder())
 		{
 			break;
 		}
 	}
-
 	// Inserts element before position of iterator
 	mComponents.insert(iter, component);
 }
@@ -191,7 +180,6 @@ void Actor::SaveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson:
 	{
 		state = "dead";
 	}
-
 	JsonHelper::AddString(alloc, inObj, "state", state);
 	JsonHelper::AddVector3(alloc, inObj, "position", mPosition);
 	JsonHelper::AddQuaternion(alloc, inObj, "rotation", mRotation);

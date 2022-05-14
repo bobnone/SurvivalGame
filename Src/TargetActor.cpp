@@ -14,8 +14,7 @@
 #include "Mesh.h"
 #include "TargetComponent.h"
 
-TargetActor::TargetActor(Game* game)
-	:Actor(game)
+TargetActor::TargetActor(Game* game):Actor(game)
 {
 	//SetScale(10.0f);
 	SetRotation(Quaternion(Vector3::UnitZ, Math::Pi));

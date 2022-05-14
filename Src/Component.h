@@ -45,17 +45,18 @@ public:
 	virtual void ProcessInput(const uint8_t* keyState) {}
 	// Called when world transform changes
 	virtual void OnUpdateWorldTransform();
-
-	class Actor* GetOwner() { return mOwner; }
-	int GetUpdateOrder() const { return mUpdateOrder; }
-
+	class Actor* GetOwner()
+	{
+		return mOwner;
+	}
+	int GetUpdateOrder() const
+	{
+		return mUpdateOrder;
+	}
 	virtual TypeID GetType() const = 0;
-
 	// Load/Save
 	virtual void LoadProperties(const rapidjson::Value& inObj);
-	virtual void SaveProperties(rapidjson::Document::AllocatorType& alloc,
-		rapidjson::Value& inObj) const;
-
+	virtual void SaveProperties(rapidjson::Document::AllocatorType& alloc, rapidjson::Value& inObj) const;
 	// Create a component with specified properties
 	template <typename T>
 	static Component* Create(class Actor* actor, const rapidjson::Value& inObj)

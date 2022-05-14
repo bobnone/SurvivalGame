@@ -12,8 +12,7 @@
 #include "Game.h"
 #include "AudioSystem.h"
 
-CameraComponent::CameraComponent(Actor* owner, int updateOrder)
-	:Component(owner, updateOrder)
+CameraComponent::CameraComponent(Actor* owner, int updateOrder):Component(owner, updateOrder)
 {
 }
 

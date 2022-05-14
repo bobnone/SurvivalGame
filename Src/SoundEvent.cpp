@@ -9,15 +9,11 @@
 #include "SoundEvent.h"
 #include "AudioSystem.h"
 
-SoundEvent::SoundEvent(class AudioSystem* system, unsigned int id)
-	:mSystem(system)
-	,mID(id)
+SoundEvent::SoundEvent(class AudioSystem* system, unsigned int id):mSystem(system), mID(id)
 {
 }
 
-SoundEvent::SoundEvent()
-	:mSystem(nullptr)
-	,mID(0)
+SoundEvent::SoundEvent():mSystem(nullptr), mID(0)
 {
 }
 

@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{01a30bfa-4765-4645-a1ff-cf4fd9df258f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Basic.ps" />
+    <None Include="Shaders\Basic.vs" />
+    <None Include="Shaders\BasicMesh.ps" />
+    <None Include="Shaders\BasicMesh.vs" />
+    <None Include="Shaders\GBufferGlobal.ps" />
+    <None Include="Shaders\GBufferGlobal.vs" />
+    <None Include="Shaders\GBufferPointLight.ps" />
+    <None Include="Shaders\GBufferWrite.ps" />
+    <None Include="Shaders\Phong.ps" />
+    <None Include="Shaders\Phong.vs" />
+    <None Include="Shaders\Skinned.vs" />
+    <None Include="Shaders\Sprite.ps" />
+    <None Include="Shaders\Sprite.vs" />
+    <None Include="Shaders\Transform.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\Actor.cpp" />
+    <ClCompile Include="Src\Animation.cpp" />
+    <ClCompile Include="Src\AudioComponent.cpp" />
+    <ClCompile Include="Src\AudioSystem.cpp" />
+    <ClCompile Include="Src\BallActor.cpp" />
+    <ClCompile Include="Src\BallMove.cpp" />
+    <ClCompile Include="Src\BoneTransform.cpp" />
+    <ClCompile Include="Src\BoxComponent.cpp" />
+    <ClCompile Include="Src\CameraComponent.cpp" />
+    <ClCompile Include="Src\Collision.cpp" />
+    <ClCompile Include="Src\Component.cpp" />
+    <ClCompile Include="Src\DialogBox.cpp" />
+    <ClCompile Include="Src\FollowActor.cpp" />
+    <ClCompile Include="Src\FollowCamera.cpp" />
+    <ClCompile Include="Src\Font.cpp" />
+    <ClCompile Include="Src\Game.cpp" />
+    <ClCompile Include="Src\GBuffer.cpp" />
+    <ClCompile Include="Src\HUD.cpp" />
+    <ClCompile Include="Src\LevelLoader.cpp" />
+    <ClCompile Include="Src\Main.cpp" />
+    <ClCompile Include="Src\Math.cpp" />
+    <ClCompile Include="Src\Mesh.cpp" />
+    <ClCompile Include="Src\MeshComponent.cpp" />
+    <ClCompile Include="Src\MirrorCamera.cpp" />
+    <ClCompile Include="Src\MoveComponent.cpp" />
+    <ClCompile Include="Src\PauseMenu.cpp" />
+    <ClCompile Include="Src\PhysWorld.cpp" />
+    <ClCompile Include="Src\PlaneActor.cpp" />
+    <ClCompile Include="Src\PointLightComponent.cpp" />
+    <ClCompile Include="Src\Renderer.cpp" />
+    <ClCompile Include="Src\Shader.cpp" />
+    <ClCompile Include="Src\SkeletalMeshComponent.cpp" />
+    <ClCompile Include="Src\Skeleton.cpp" />
+    <ClCompile Include="Src\SoundEvent.cpp" />
+    <ClCompile Include="Src\SpriteComponent.cpp" />
+    <ClCompile Include="Src\TargetActor.cpp" />
+    <ClCompile Include="Src\TargetComponent.cpp" />
+    <ClCompile Include="Src\Texture.cpp" />
+    <ClCompile Include="Src\UIScreen.cpp" />
+    <ClCompile Include="Src\VertexArray.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\Actor.h" />
+    <ClInclude Include="Src\Animation.h" />
+    <ClInclude Include="Src\AudioComponent.h" />
+    <ClInclude Include="Src\AudioSystem.h" />
+    <ClInclude Include="Src\BallActor.h" />
+    <ClInclude Include="Src\BallMove.h" />
+    <ClInclude Include="Src\BoneTransform.h" />
+    <ClInclude Include="Src\BoxComponent.h" />
+    <ClInclude Include="Src\CameraComponent.h" />
+    <ClInclude Include="Src\Collision.h" />
+    <ClInclude Include="Src\Component.h" />
+    <ClInclude Include="Src\DialogBox.h" />
+    <ClInclude Include="Src\FollowActor.h" />
+    <ClInclude Include="Src\FollowCamera.h" />
+    <ClInclude Include="Src\Font.h" />
+    <ClInclude Include="Src\Game.h" />
+    <ClInclude Include="Src\GBuffer.h" />
+    <ClInclude Include="Src\HUD.h" />
+    <ClInclude Include="Src\LevelLoader.h" />
+    <ClInclude Include="Src\Math.h" />
+    <ClInclude Include="Src\MatrixPalette.h" />
+    <ClInclude Include="Src\Mesh.h" />
+    <ClInclude Include="Src\MeshComponent.h" />
+    <ClInclude Include="Src\MirrorCamera.h" />
+    <ClInclude Include="Src\MoveComponent.h" />
+    <ClInclude Include="Src\PauseMenu.h" />
+    <ClInclude Include="Src\PhysWorld.h" />
+    <ClInclude Include="Src\PlaneActor.h" />
+    <ClInclude Include="Src\PointLightComponent.h" />
+    <ClInclude Include="Src\Renderer.h" />
+    <ClInclude Include="Src\Shader.h" />
+    <ClInclude Include="Src\SkeletalMeshComponent.h" />
+    <ClInclude Include="Src\Skeleton.h" />
+    <ClInclude Include="Src\SoundEvent.h" />
+    <ClInclude Include="Src\SpriteComponent.h" />
+    <ClInclude Include="Src\TargetActor.h" />
+    <ClInclude Include="Src\TargetComponent.h" />
+    <ClInclude Include="Src\Texture.h" />
+    <ClInclude Include="Src\UIScreen.h" />
+    <ClInclude Include="Src\VertexArray.h" />
+  </ItemGroup>
+</Project>
